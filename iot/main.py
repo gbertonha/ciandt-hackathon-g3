@@ -50,7 +50,7 @@ class Iot(object):
         #    self.send_to_firestore('temperature', round(temperature, 2))
         #if humidity is not None:
         #    self.send_to_firestore('humidity', round(humidity, 2))
-        return (round(temperature/2), round(humidity,2))
+        return (round(temperature, 2), round(humidity,2))
 
     def pressure_sensor(self):
         """This method gets the pressure value
@@ -85,7 +85,7 @@ class Iot(object):
             raise Exception('failed to get weather')
         
         weather_dict = weather_res.json()
-        cur_weather_dict = weather_dict.get('currently', {'time':'','temperature':0,'pressure':0,'humidity':0})
+        cur_weather_dict = weather_dict.get('currently', {'time':'','temperature':0,'pressure':0,'humidity':0, 'seconds':0})
         # determine which weather items we want
         cur_unixtime = cur_weather_dict['time']
         cur_date = ''
@@ -104,7 +104,7 @@ class Iot(object):
         #if cur_date is not None:
         #    self.send_to_firestore('date', cur_date)
         print(cur_temp)
-        return cur_date, cur_temp, cur_press, cur_hum    
+        return cur_date, cur_temp, cur_press, cur_hum, cur_unixtime    
         
         
 
@@ -143,15 +143,16 @@ class Iot(object):
                              'humidity':0,
                              'outdoor_temperature':0,
                              'outdoor_pressure':0,
-                             'outdoor_humidity':0
+                             'outdoor_humidity':0,
+                             'seconds':0
                            }
                 #TODO add in default return values for these
                 tmp_temp, tmp_humidity = self.temperature_and_humidity_sensor()
                 tmp_press = self.pressure_sensor()
                 try:
-                    tmp_date, tmp_otemp, tmp_opress, tmp_ohum = self.get_weather()
+                    tmp_date, tmp_otemp, tmp_opress, tmp_ohum, tmp_seconds = self.get_weather()
                 except:
-                    tmp_date, tmp_otemp, tmp_opress, tmp_ohum = ('', 0,0,0)
+                    tmp_date, tmp_otemp, tmp_opress, tmp_ohum, tmp_seconds = ('', 0,0,0,0)
                 new_entry['date']=tmp_date
                 new_entry['temperature']=tmp_temp
                 new_entry['pressure']=tmp_press
@@ -159,6 +160,7 @@ class Iot(object):
                 new_entry['outdoor_temperature']=tmp_otemp
                 new_entry['outdoor_pressure']=tmp_opress
                 new_entry['outdoor_humidity']=tmp_ohum
+                new_entry['seconds']= tmp_seconds
                 
                 self.send_to_firestore(new_entry)
                 
