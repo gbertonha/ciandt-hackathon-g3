@@ -78,6 +78,25 @@ header h2 {
   margin: auto;
 }
 
+button {
+  margin-bottom: 10px;
+  margin-left: 200px;
+}
+
+#aircon {
+  padding: 10px;
+  height: 4px;
+  width: 4px;
+  border-radius: 50px;
+}
+
+.isOff {
+  background-color: red;
+}
+
+.isOn {
+  background-color: green;
+}
 .row {
   display: flex;
   flex-direction: row;
@@ -102,6 +121,7 @@ header h2 {
   position: relative;
 }
 .current-container {
+  border-radius: 50%;
   width: 180px;
   height: 180px;
   background: rgb(41, 41, 41);
@@ -112,7 +132,7 @@ header h2 {
 .icon {
   width: 180px;
   height: 180px;
-  background: rgb(237, 237, 237);
+  background: transparent;
   margin: 0;
   position: absolute;
   top: 0;
