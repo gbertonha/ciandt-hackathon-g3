@@ -1,18 +1,23 @@
 /*global firebase, document */
 /*jslint browser:true */
 "use strict";
-import axios from "axios";
 
 /**
  * Reads data from Firestore and updates information
  * displayed on the dashboard
  * @param {String} sensor The sensor key.
  */
+
+const useful_data = {};
+
 function readData(sensor) {
   let db = firebase.firestore();
   db.collection(sensor).onSnapshot(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
+      console.log("I AM DOC", doc.data());
+      console.log(document.getElementById(sensor));
       document.getElementById(sensor).innerText = doc.data().value;
+      useful_data[sensor] = doc.data().value;
       var today = new Date();
       var date =
         today.getFullYear() +
@@ -33,8 +38,14 @@ function readData(sensor) {
  */
 document.addEventListener("DOMContentLoaded", function() {
   try {
-    let sensors = ["temperature", "humidity", "pressure"];
+    let sensors = [
+      "temperature",
+      "pressure",
+      "humidity",
+      "outside-temperature"
+    ];
     sensors.forEach(function(sensor) {
+      console.log("forEach", sensor);
       readData(sensor);
     });
   } catch (e) {

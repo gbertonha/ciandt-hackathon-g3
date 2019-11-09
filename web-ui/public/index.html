@@ -16,7 +16,7 @@
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
 
-    <script type="module" defer src="js/script.js"></script>
+    <script defer src="js/script.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,7 +46,7 @@
         <div class="column humidity">
           <div class="sensor-card">
             <div class="current-container">
-              <span id="temperature" class="current-value">0</span>
+              <span id="outside-temperature" class="current-value">0</span>
               <span class="unit">°C</span>
             </div>
             <div class="icon">
@@ -68,12 +68,11 @@
             </div>
           </div>
         </div>
-
-        <div>
-          <p>Where are you based at?</p>
-          <button class="get-my-ip">Click me</button>
-        </div>
       </div>
+      <div class="message-row">
+        <p class="message">LOREM IPSUM DIXIT</p>
+      </div>
+
       <span class="updated">Last update: <span id="last-update"></span></span>
     </div>
   </body>
