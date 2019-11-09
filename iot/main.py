@@ -50,7 +50,7 @@ class Iot(object):
         #    self.send_to_firestore('temperature', round(temperature, 2))
         #if humidity is not None:
         #    self.send_to_firestore('humidity', round(humidity, 2))
-        return (temperature, humidity)
+        return (round(temperature/2), round(humidity,2))
 
     def pressure_sensor(self):
         """This method gets the pressure value
@@ -64,7 +64,7 @@ class Iot(object):
         print(pressure)
         #if pressure is not None:
         #    self.send_to_firestore('pressure', int(round(pressure / 100.0, 2)))
-        return pressure
+        return round(pressure / 100.0, 2)
     
     def get_location(self):
         geores = requests.get(self.geoloc_url, {'apiKey':self.geoloc_apikey})
