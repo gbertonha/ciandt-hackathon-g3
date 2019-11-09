@@ -1,7 +1,6 @@
 /*global firebase, document */
 /*jslint browser:true */
 "use strict";
-
 /**
  * Reads data from Firestore and updates information
  * displayed on the dashboard
@@ -10,7 +9,8 @@
 
 let state = {
   useful_data: {},
-  isAirCon: true
+  isAirCon: true,
+  max: ""
 };
 
 function readData(sensor) {
@@ -48,7 +48,7 @@ function printMessage() {
     message.innerText =
       "The temperature is too high! Consider cooling." + otherMessage;
   } else if (diff < -3) {
-    message.innerText = "The temperature is too low! Consider heating.";
+    message.innerText = "The temperature is too low!" + otherMessage;
   } else {
     message.innerText = "The temperature is fine." + " " + otherMessage;
   }
@@ -59,6 +59,33 @@ function processSensors(sensors) {
     readData(sensor);
   });
 }
+
+const data = {
+  labels: [],
+  datasets: [
+    {
+      name: "Indoor",
+      type: "bar",
+      values: []
+    },
+    {
+      name: "Outdoor",
+      type: "bar",
+      values: []
+    }
+  ]
+};
+
+const chart = new frappe.Chart("#chart", {
+  // or a DOM element,
+  // new Chart() in case of ES6 module with above usage
+  title: "Difference in temperatures",
+  data: data,
+  type: "bar", // or 'bar', 'line', 'scatter', 'pie', 'percentage'
+  width: 300,
+  height: 250,
+  colors: ["#7cd6fd", "#743ee2"]
+});
 
 let tempDiff = 0;
 /**
@@ -79,18 +106,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
       })
       .then(result => {
-        let max = 0;
         for (const data in state.useful_data) {
-          if (state.useful_data[data].seconds > max) {
-            max = state.useful_data[data].seconds;
+          if (state.useful_data[data].seconds > state.max) {
+            state.max = state.useful_data[data].seconds;
           }
         }
         for (const sensor of sensors) {
           document.getElementById(sensor).innerText =
-            state.useful_data[max][sensor];
+            state.useful_data[state.max][sensor];
         }
         document.getElementById("last-update").innerText =
-          state.useful_data[max].date;
+          state.useful_data[state.max].date;
+
+        for (const datas in state.useful_data) {
+          data.labels.push(state.useful_data[datas].date);
+          data.datasets[0].values.push(state.useful_data[datas].temperature);
+          data.datasets[1].values.push(
+            state.useful_data[datas].outdoor_temperature
+          );
+        }
       });
 
     //

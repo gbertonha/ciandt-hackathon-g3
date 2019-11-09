@@ -3,15 +3,24 @@
 
 body {
   background: linear-gradient(90deg, #7474bf 10%, #348ac7 90%);
+  text-align: center;
 }
 
+#chart {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: white;
+  width: 100%;
+}
 .message-row {
   background-color: white;
   border: 1px solid black;
-  text-align: center;
+  display: flex;
 }
 .message {
   color: red;
+  margin: 10px auto;
 }
 
 header {
@@ -80,14 +89,13 @@ header h2 {
 
 button {
   margin-bottom: 10px;
-  margin-left: 200px;
 }
 
 #aircon {
-  padding: 10px;
-  height: 4px;
-  width: 4px;
-  border-radius: 50px;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 .isOff {
@@ -106,7 +114,7 @@ button {
 }
 
 .column {
-  display: flex;
+  display: block;
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
