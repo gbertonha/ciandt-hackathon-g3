@@ -17,8 +17,11 @@ function readData(sensor) {
   let db = firebase.firestore();
   db.collection(sensor).onSnapshot(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-      console.log(doc.data());
-      state.useful_data[sensor] = doc.data().value;
+      if (doc.data().date) {
+        state.useful_data[sensor] = doc.data();
+      } else {
+        state.useful_data[sensor] = doc.data().value;
+      }
       document.getElementById(sensor).innerText = doc.data().value;
       let today = new Date();
       let date =
@@ -37,19 +40,17 @@ function readData(sensor) {
 
 function printMessage() {
   const in_temp = state.useful_data.temperature;
-  const out_temp = state.useful_data["outside-temperature"];
+  const out_temp = state.useful_data["outdoor_temperature"];
   const diff = in_temp - out_temp;
   const message = document.getElementsByClassName("message")[0];
-  const otherMessage = state.isAirCon
-    ? "...and maybe turn off the aircon!"
-    : "";
+  const otherMessage = state.isAirCon ? "You don't need the aircon!" : "";
   if (diff > 3) {
     message.innerText =
       "The temperature is too high! Consider cooling." + otherMessage;
   } else if (diff < -3) {
     message.innerText = "The temperature is too low! Consider heating.";
   } else {
-    message.innerText = "The temperature is fine. Turn off the AC if ON.";
+    message.innerText = "The temperature is fine." + " " + otherMessage;
   }
 }
 
@@ -66,14 +67,33 @@ let tempDiff = 0;
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     document.getElementById("aircon").classList.add("isOn");
-    let sensors = [
-      "data",
-      "temperature",
-      "pressure",
-      "humidity",
-      "outside-temperature"
-    ];
-    processSensors(sensors);
+    let sensors = ["temperature", "outdoor_temperature"];
+    // processSensors(sensors);
+    let db = firebase.firestore();
+    db.collection("data")
+      .where("seconds", ">=", 0)
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          state.useful_data[doc.data().seconds] = doc.data();
+        });
+      })
+      .then(result => {
+        let max = 0;
+        for (const data in state.useful_data) {
+          if (state.useful_data[data].seconds > max) {
+            max = state.useful_data[data].seconds;
+          }
+        }
+        for (const sensor of sensors) {
+          document.getElementById(sensor).innerText =
+            state.useful_data[max][sensor];
+        }
+        document.getElementById("last-update").innerText =
+          state.useful_data[max].date;
+      });
+
+    //
   } catch (e) {
     console.error(e);
   }
