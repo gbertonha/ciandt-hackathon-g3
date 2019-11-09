@@ -8,61 +8,90 @@
  * @param {String} sensor The sensor key.
  */
 
-const useful_data = {};
+let state = {
+  useful_data: {},
+  isAirCon: true
+};
 
 function readData(sensor) {
   let db = firebase.firestore();
   db.collection(sensor).onSnapshot(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-      console.log("I AM DOC", doc.data());
-      console.log(document.getElementById(sensor));
+      console.log(doc.data());
+      state.useful_data[sensor] = doc.data().value;
       document.getElementById(sensor).innerText = doc.data().value;
-      useful_data[sensor] = doc.data().value;
-      var today = new Date();
-      var date =
+      let today = new Date();
+      let date =
         today.getFullYear() +
         "-" +
         (today.getMonth() + 1) +
         "-" +
         today.getDate();
-      var time =
+      let time =
         today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      var dateTime = date + " " + time;
+      let dateTime = date + " " + time;
       document.getElementById("last-update").innerText = dateTime;
     });
   });
 }
 
+function printMessage() {
+  const in_temp = state.useful_data.temperature;
+  const out_temp = state.useful_data["outside-temperature"];
+  const diff = in_temp - out_temp;
+  const message = document.getElementsByClassName("message")[0];
+  const otherMessage = state.isAirCon
+    ? "...and maybe turn off the aircon!"
+    : "";
+  if (diff > 3) {
+    message.innerText =
+      "The temperature is too high! Consider cooling." + otherMessage;
+  } else if (diff < -3) {
+    message.innerText = "The temperature is too low! Consider heating.";
+  } else {
+    message.innerText = "The temperature is fine. Turn off the AC if ON.";
+  }
+}
+
+function processSensors(sensors) {
+  sensors.forEach(sensor => {
+    readData(sensor);
+  });
+}
+
+let tempDiff = 0;
 /**
  * Triggered once DOM is loaded.
  */
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async () => {
   try {
+    document.getElementById("aircon").classList.add("isOn");
     let sensors = [
+      "data",
       "temperature",
       "pressure",
       "humidity",
       "outside-temperature"
     ];
-    sensors.forEach(function(sensor) {
-      console.log("forEach", sensor);
-      readData(sensor);
-    });
+    processSensors(sensors);
   } catch (e) {
     console.error(e);
   }
 });
 
-document.getElementsByClassName("get-my-ip")[0];
+const airconControl = document.getElementsByClassName("airconControl")[0];
 
-document.addEventListener("click", async () => {
-  try {
-    const result = await axios({
-      method: "get",
-      url: "https://api.ipify.org?format=json"
-    });
-  } catch (e) {
-    console.log("error!", e);
+airconControl.addEventListener("click", () => {
+  if (state.isAirCon) {
+    state.isAirCon = false;
+    document.getElementById("aircon").classList.add("isOff");
+    document.getElementById("aircon").classList.remove("isOn");
+  } else {
+    state.isAirCon = true;
+    document.getElementById("aircon").classList.toggle("isOn");
+    document.getElementById("aircon").classList.remove("isOff");
   }
-  console.log(result);
 });
+
+const checkDiff = document.getElementsByClassName("checkdiff")[0];
+checkDiff.addEventListener("click", () => printMessage());
