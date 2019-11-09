@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Welcome to CI&T Hackathon</title>
 
     <!-- update the version number as needed -->
@@ -16,10 +16,10 @@
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
 
-    <script defer src="js/script.js"></script>
+    <script type="module" defer src="js/script.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
     <div class="container">
@@ -28,7 +28,7 @@
         <h1>Change the world with IoT</h1>
         <h2>Group 3</h2>
       </header>
-      
+
       <div class="row">
         <div class="first column temperature">
           <div class="sensor-card">
@@ -38,23 +38,23 @@
             </div>
             <div class="icon">
               <span class="i">&#xf055;</span>
-              <span class="type">TEMP</span>
+              <span class="type">INSIDE</span>
             </div>
           </div>
-        </div> 
+        </div>
 
         <div class="column humidity">
           <div class="sensor-card">
             <div class="current-container">
-              <span id="humidity" class="current-value">0</span>
-              <span class="unit">%</span>
+              <span id="temperature" class="current-value">0</span>
+              <span class="unit">°C</span>
             </div>
             <div class="icon">
-              <span class="i">&#xf07a;</span>
-              <span class="type">HUMIDITY</span>
+              <span class="i">&#xf055;</span>
+              <span class="type">OUTSIDE</span>
             </div>
           </div>
-        </div> 
+        </div>
 
         <div class="column pressure">
           <div class="sensor-card">
@@ -67,8 +67,12 @@
               <span class="type">PRESSURE</span>
             </div>
           </div>
-        </div> 
+        </div>
 
+        <div>
+          <p>Where are you based at?</p>
+          <button class="get-my-ip">Click me</button>
+        </div>
       </div>
       <span class="updated">Last update: <span id="last-update"></span></span>
     </div>
