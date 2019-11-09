@@ -1,5 +1,5 @@
 """This is the main program"""
-import time
+import time, datetime
 import requests
 
 import RPi.GPIO as GPIO
@@ -88,8 +88,8 @@ class Iot(object):
         cur_weather_dict = weather_dict.get('currently', {'time':'','temperature':0,'pressure':0,'humidity':0})
         # determine which weather items we want
         cur_unixtime = cur_weather_dict['time']
-        cur_date = None
-        if cur_unixtime is not None:
+        cur_date = ''
+        if cur_unixtime is not '':
             cur_date = time.strftime("%Y-%m-%d %H:%M:%S (%Z)", time.localtime(cur_unixtime))
         cur_temp = cur_weather_dict['temperature']
         cur_press = cur_weather_dict['pressure']
