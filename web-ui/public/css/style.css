@@ -1,15 +1,24 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300, 400, 700);
 @import url(https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css);
 
 body {
-  background: linear-gradient(90deg, #7474BF 10%, #348AC7 90%);
+  background: linear-gradient(90deg, #7474bf 10%, #348ac7 90%);
+}
+
+.message-row {
+  background-color: white;
+  border: 1px solid black;
+  text-align: center;
+}
+.message {
+  color: red;
 }
 
 header {
-  font-size: 24px; 
-  width: 100%; 
-  height: 100px; 
-  background: white; 
+  font-size: 24px;
+  width: 100%;
+  height: 100px;
+  background: white;
   position: fixed;
   text-align: center;
   top: 0;
@@ -32,7 +41,7 @@ header h1,
 header h2 {
   font-weight: 500;
   letter-spacing: -2px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   line-height: 100px;
   margin: 0px 0px 0px 15px;
   padding: 0px;
@@ -56,13 +65,11 @@ header h2 {
 */
 
 @media only screen and (max-width: 750px) {
-  
   header h1,
   header h2 {
     font-size: 24px;
     letter-spacing: -2px;
   }
-  
 }
 
 .container {
@@ -76,7 +83,7 @@ header h2 {
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  margin:0 -15px;
+  margin: 0 -15px;
 }
 
 .column {
@@ -87,14 +94,14 @@ header h2 {
   padding: 15px;
   text-align: center;
 }
-  
-.sensor-card{
+
+.sensor-card {
   width: 360px;
   height: 180px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   position: relative;
 }
-.current-container{
+.current-container {
   width: 180px;
   height: 180px;
   background: rgb(41, 41, 41);
@@ -102,7 +109,7 @@ header h2 {
   top: 0;
   left: 0;
 }
-.icon{
+.icon {
   width: 180px;
   height: 180px;
   background: rgb(237, 237, 237);
@@ -111,7 +118,7 @@ header h2 {
   top: 0;
   right: 0;
 }
-.current-value{
+.current-value {
   font-size: 60px;
   text-align: center;
   display: block;
@@ -119,12 +126,12 @@ header h2 {
   color: rgb(241, 255, 23);
   padding: 20px 0 0;
 }
-.unit{
+.unit {
   color: rgb(52, 198, 235);
   font-size: 40px;
   display: block;
 }
-.icon span.i{
+.icon span.i {
   font-family: weathericons;
   font-size: 70px;
   display: block;
@@ -132,7 +139,7 @@ header h2 {
   text-align: center;
 }
 
-.icon span.type{
+.icon span.type {
   color: rgb(0, 0, 0);
   text-align: center;
   text-transform: uppercase;
@@ -143,7 +150,7 @@ header h2 {
 
 .updated {
   color: rgb(241, 255, 23);
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   margin: 0px 0px 0px 15px;
   padding: 0px;
   font-size: 20px;
